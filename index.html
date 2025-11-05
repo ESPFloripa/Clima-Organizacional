@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aula - Clima Organizacional</title>
+    <!-- Carrega Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Carrega a fonte Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* Define a fonte Inter como padrão */
+        html {
+            scroll-behavior: smooth; /* Para rolagem suave */
+        }
+        body {
+            font-family: 'Inter', sans-serif;
+            /* scroll-padding-top não é mais necessário com cabeçalho estático */
+        }
+
+        /* Estilo personalizado para os iframes (vídeos) */
+        .video-container {
+            position: relative;
+            width: 100%;
+            overflow: hidden;
+            padding-top: 56.25%; /* Proporção 16:9 (altura/largura) */
+        }
+
+        .video-container iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border: 0;
+        }
+
+        /* Estilo para o efeito "glassmorphism" (vidro) nos botões de navegação */
+        .glass-button {
+            background-color: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(5px);
+            -webkit-backdrop-filter: blur(5px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        .glass-button:hover {
+            background-color: rgba(255, 255, 255, 0.2);
+        }
+
+        /* Estilo para o card de login "glassmorphism" */
+        .login-card-glass {
+            background-color: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+    </style>
+</head>
+<body class="bg-gray-50">
+
+    <!-- TELA DE LOGIN -->
+    <section id="login-screen" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-cover bg-center" style="background-image: url('https://i.imgur.com/QKbVFFU.png');">
+        <!-- Sobreposição -->
+        <div class="absolute inset-0 bg-black bg-opacity-70"></div>
+
+        <!-- Card de Login -->
+        <div class="relative z-10 w-full max-w-md p-8 m-4 login-card-glass rounded-2xl shadow-2xl">
+            <div class="text-center text-white">
+                <p class="text-lg font-light text-gray-200">Especialização em Liderança e Gestão em Saúde</p>
+                <h1 class="text-4xl font-bold my-3">Liderança Ética</h1>
+                <p class="text-lg font-light text-gray-200">Escola de Saúde Pública de Florianópolis</p>
+                
+                <p class="text-sm text-gray-300 mt-6 border-t border-white border-opacity-20 pt-5">
+                    Conteúdo restrito aos alunos regularmente matriculados no curso.
+                </p>
+                <p class="text-sm text-gray-200 mt-4">
+                    Por favor, insira a senha para acessar esta aula.
+                </p>
+            </div>
+
+            <!-- Formulário de Login -->
+            <form id="login-form" class="mt-6 space-y-4">
+                <div>
+                    <!-- Input de Senha -->
+                    <input type="password" id="password-input" 
+                           class="w-full px-4 py-3 bg-white bg-opacity-20 border border-white border-opacity-30 rounded-lg text-white placeholder-gray-300 focus:outline-none focus:ring-2 focus:ring-white"
+                           placeholder="Senha" required>
+                </div>
+                <!-- Botão Entrar -->
+                <button type="submit" 
+                        class="w-full py-3 px-6 bg-teal-500 text-white font-semibold rounded-lg shadow-md hover:bg-teal-600 transition-all duration-200 transform hover:scale-105">
+                    Entrar
+                </button>
+            </form>
+            <!-- Mensagem de Erro -->
+            <p id="error-message" class="hidden mt-4 text-center text-red-400 font-medium"></p>
+        </div>
+    </section>
+
+    <!-- CONTEÚDO PRINCIPAL (Inicialmente escondido) -->
+    <div id="main-content" class="hidden">
+
+        <!-- CABEÇALHO E NAVEGAÇÃO -->
+        <!-- Adicionado "relative" para conter a sobreposição absoluta -->
+        <header class="relative bg-cover bg-center shadow-lg" style="background-image: url('https://i.imgur.com/QKbVFFU.png');">
+            <!-- Sobreposição escura para legibilidade -->
+            <!-- O "absolute" agora fica contido dentro do "relative" do header -->
+            <div class="absolute inset-0 bg-black bg-opacity-60"></div>
+            
+            <!-- Conteúdo do Cabeçalho (Título) -->
+            <!-- O z-10 garante que o conteúdo fique acima da sobreposição -->
+            <div class="container mx-auto max-w-5xl relative z-10 px-4 pt-12 pb-4 md:px-6"> 
+                <p class="text-xl font-light text-gray-200">Escola de Saúde Pública de Florianópolis</p>
+                <h1 class="text-3xl md:text-4xl font-bold mt-2 text-white">Clima Organizacional</h1>
+                <p class="text-xl font-light text-gray-200 mt-1">Especialização em Liderança e Gestão em Saúde</p>
+            </div>
+
+            <!-- Menu de Navegação Rápido -->
+            <nav class="relative z-10 border-t border-white border-opacity-20" style="background-color: rgba(13, 76, 81, 0.2); backdrop-filter: blur(5px); -webkit-backdrop-filter: blur(5px);">
+                <div class="container mx-auto max-w-5xl px-4 py-4 md:px-6">
+                    <div class="flex flex-wrap items-center justify-center gap-3 md:gap-4">
+                        <a href="#atividade1" class="glass-button text-white font-medium py-2 px-4 rounded-lg text-sm transition-all duration-200">
+                            Atividade 1
+                        </a>
+                        <a href="#atividade2" class="glass-button text-white font-medium py-2 px-4 rounded-lg text-sm transition-all duration-200">
+                            Atividade 2
+                        </a>
+                        <a href="#atividade3" class="glass-button text-white font-medium py-2 px-4 rounded-lg text-sm transition-all duration-200">
+                            Atividade 3
+                        </a>
+                        <a href="#atividade4" class="glass-button text-white font-medium py-2 px-4 rounded-lg text-sm transition-all duration-200">
+                            Atividade 4
+                        </a>
+                    </div>
+                </div>
+            </nav>
+        </header>
+
+        <!-- CONTEÚDO PRINCIPAL -->
+        <!-- Padding-top ajustado para pt-8 pois o cabeçalho não é mais fixo -->
+        <main class="container mx-auto max-w-5xl p-4 md:p-6 pt-8">
+            <div class="space-y-6">
+
+                <!-- Card Atividade 1 -->
+                <section id="atividade1" class="bg-white p-6 md:p-8 rounded-xl shadow-lg border border-gray-200">
+                    <header class="border-b border-gray-200 pb-4 mb-6">
+                        <h2 class="text-2xl font-bold text-teal-800">Atividade 1: O que é Clima Organizacional</h2>
+                        <p class="text-sm text-gray-500 mt-1">Tempo estimado: 5 minutos</p>
+                    </header>
+                    
+                    <p class="text-gray-700 mb-6">Assista ao vídeo abaixo para uma introdução sobre o tema.</p>
+                    
+                    <!-- Container do Vídeo Responsivo -->
+                    <div class="video-container rounded-lg overflow-hidden shadow-md">
+                        <iframe 
+                            src="https://www.youtube.com/embed/HQOrD6VrF6A" 
+                            title="YouTube video player" 
+                            frameborder="0" 
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                            allowfullscreen>
+                        </iframe>
+                    </div>
+                </section>
+
+                <!-- Card Atividade 2 -->
+                <section id="atividade2" class="bg-white p-6 md:p-8 rounded-xl shadow-lg border border-gray-200">
+                    <header class="border-b border-gray-200 pb-4 mb-6">
+                        <h2 class="text-2xl font-bold text-teal-800">Atividade 2: Aprofundamento e Pesquisa</h2>
+                        <p class="text-sm text-gray-500 mt-1">Tempo estimado: 25 minutos</p>
+                    </header>
+                    
+                    <div class="space-y-6">
+                        <p class="text-gray-700">Leia o texto disponível no link abaixo para aprofundar seus conhecimentos sobre Clima Organizacional e modelos de pesquisa.</p>
+                        <p class="text-gray-700 font-medium">Você não precisa ler as 60 perguntas detalhadamente agora, pois vai usá-las posteriormente no exercício da próxima atividade.</p>
+                        
+                        <!-- Botão para o Documento -->
+                        <a href="https://drive.google.com/file/d/1qMw5bHso-MKzmkOEudefpmJvPEGWV6Oz/view?usp=sharing" 
+                           target="_blank" 
+                           rel="noopener noreferrer" 
+                           class="inline-flex items-center gap-2 bg-teal-600 text-white font-semibold py-3 px-6 rounded-lg shadow-md hover:bg-teal-700 transition-all duration-200 transform hover:scale-105">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                                <path fill-rule="evenodd" d="M4 4a2 2 0 012-2h8a2 2 0 012 2v10a2 2 0 01-2 2H8a2 2 0 01-2-2V4zm2 1v1h8V5H6z m8 10v-2H6v2h8z m-8-4V9h8v2H6z" clip-rule="evenodd" />
+                            </svg>
+                            Acessar Texto de Leitura
+                        </a>
+                    </div>
+                </section>
+
+                <!-- Card Atividade 3 -->
+                <section id="atividade3" class="bg-white p-6 md:p-8 rounded-xl shadow-lg border border-gray-200">
+                    <header class="border-b border-gray-200 pb-4 mb-6">
+                        <h2 class="text-2xl font-bold text-teal-800">Atividade 3: Elaboração da Pesquisa de Clima</h2>
+                        <p class="text-sm text-gray-500 mt-1">Tempo estimado: 60 minutos</p>
+                    </header>
+
+                    <div class="space-y-6">
+                        <p class="text-gray-700">As pesquisas de clima comumente são utilizadas em grandes organizações de maneira sistemática e global, mas na falta de uma iniciativa geral, nada impede de implementarmos pesquisas de clima para nossas equipes internas.</p>
+                        
+                        <!-- Passo 1 -->
+                        <div>
+                            <h3 class="text-lg font-semibold text-gray-800 mb-4">1. Assista ao vídeo de instrução (5 minutos):</h3>
+                            <div class="video-container rounded-lg overflow-hidden shadow-md">
+                                <iframe 
+                                    src="https://www.youtube.com/embed/m6blHKDMhIA" 
+                                    title="YouTube video player" 
+                                    frameborder="0" 
+                                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                                    allowfullscreen>
+                                </iframe>
+                            </div>
+                        </div>
+
+                        <!-- Passo 2 -->
+                        <div>
+                            <h3 class="text-lg font-semibold text-gray-800 mb-3">2. Crie seu questionário:</h3>
+                            <p class="text-gray-700 mb-4">Crie um questionário de pesquisa de clima organizacional tomando como realidade a equipe que você lidera ou a equipe em que está inserido. Lembre-se de:</p>
+                            <ul class="list-disc list-inside space-y-2 text-gray-700 pl-4">
+                                <li>Colocar uma pergunta geral sobre a <span class="font-semibold">satisfação com o trabalho</span> (conforme sugerido no vídeo).</li>
+                                <li>Selecionar <span class="font-semibold">10 perguntas</span> dentre as 60 sugeridas no texto da Atividade 2.</li>
+                            </ul>
+                            <p class="text-gray-700 mt-4 mb-2">Leve em consideração na seleção:</p>
+                            <ul class="list-decimal list-inside space-y-2 text-gray-700 pl-4">
+                                <li>O que eu quero mensurar (qual a utilidade);</li>
+                                <li>Qual o potencial de intervenção tenho sobre o problema.</li>
+                            </ul>
+                            <p class="text-gray-600 italic mt-4">Caso prefira criar questões novas, não há problema, desde que use os mesmos critérios.</p>
+                        </div>
+
+                        <!-- Passo 3 -->
+                        <div>
+                            <h3 class="text-lg font-semibold text-gray-800 mb-3">3. Configure um Google Forms:</h3>
+                            <p class="text-gray-700 mb-4">Com a questão geral e as 10 questões definidas, configure seu formulário seguindo os passos:</p>
+                            <ul class="list-disc list-inside space-y-2 text-gray-700 pl-4">
+                                <li>Acesse o <a href="https://docs.google.com/forms/u/0/?tgif=d" target="_blank" rel="noopener noreferrer" class="text-teal-600 hover:underline font-medium">Google Forms</a> e escolha "formulário em branco".</li>
+                                <li>Dê um título e descreva brevemente a pesquisa.</li>
+                                <li><span class="font-semibold text-red-600">Importante:</span> Não colete e-mails ou qualquer pergunta que possa identificar o respondente. A pesquisa deve ser anônima.</li>
+                                <li>Inclua as questões com escala do tipo Likert (Múltipla Escolha), conforme sugerido no texto.</li>
+                                <li>Faça um teste para verificar se está funcionando.</li>
+                            </ul>
+                        </div>
+
+                        <!-- Passo 4: Envio -->
+                        <div>
+                            <h3 class="text-lg font-semibold text-gray-800 mb-3">4. Compartilhe seu formulário:</h3>
+                            <p class="text-gray-700 mb-4">Compartilhe o link do formulário que você criou no botão abaixo:</p>
+                            <a href="https://forms.gle/TC6Z5s8hiybM1Qsg6" 
+                               target="_blank" 
+                               rel="noopener noreferrer" 
+                               class="inline-flex items-center gap-2 bg-teal-600 text-white font-semibold py-3 px-6 rounded-lg shadow-md hover:bg-teal-700 transition-all duration-200 transform hover:scale-105">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                                    <path d="M10 12a2 2 0 100-4 2 2 0 000 4z" />
+                                    <path fill-rule="evenodd" d="M.458 10C1.732 5.943 5.522 3 10 3s8.268 2.943 9.542 7c-1.274 4.057-5.022 7-9.542 7S1.732 14.057.458 10zM14 10a4 4 0 11-8 0 4 4 0 018 0z" clip-rule="evenodd" />
+                                </svg>
+                                Enviar Link do Formulário
+                            </a>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Card Atividade 4 - Opcional -->
+                <section id="atividade4" class="bg-white p-6 md:p-8 rounded-xl shadow-lg border-2 border-dashed border-teal-300">
+                    <header class="pb-4 mb-6">
+                        <div class="flex items-center gap-3">
+                            <span class="inline-block bg-teal-100 text-teal-800 text-xs font-semibold px-3 py-1 rounded-full uppercase">Opcional</span>
+                            <h2 class="text-2xl font-bold text-teal-800">Atividade 4: Pesquisa Interna de Clima</h2>
+                        </div>
+                    </header>
+
+                    <div class="space-y-4 text-gray-700">
+                        <p>Aplique a sua pesquisa de clima à sua equipe de trabalho. Envie o link do formulário explicando a utilidade e os possíveis benefícios do processo. Não esqueça de estipular um prazo plausível para resposta.</p>
+                        <p class="font-medium">Caso você não seja líder:</p>
+                        <p>Converse com a sua liderança e peça autorização. Explique a utilidade do instrumento, o que quer mensurar e o que pode ser feito com o resultado. Dê a oportunidade para a chefia alterar perguntas, se necessário.</p>
+                        <p class="font-medium">Após a coleta:</p>
+                        <p>Colete os resultados e os analise. Recomendamos que você reflita sobre os pontos fortes e fracos e um possível plano de intervenção. Lembre que após a pesquisa deve haver um tempo adequado para trabalhar este plano.</p>
+                    </div>
+                </section>
+
+            </div>
+        </main>
+
+        <!-- RODAPÉ -->
+        <footer class="mt-12 bg-teal-900 text-teal-200">
+            <div class="container mx-auto max-w-5xl p-6 md:p-8 text-center">
+                <p class="font-semibold text-white">Escola de Saúde Pública de Florianópolis</p>
+                <p class="text-sm mt-1">&copy; Todos os direitos reservados. Não copie sem autorização.</p>
+            </div>
+        </footer>
+
+    </div> <!-- Fim do #main-content -->
+
+    <!-- Script de Login -->
+    <script>
+        // Aguarda o carregamento completo do DOM
+        document.addEventListener('DOMContentLoaded', () => {
+            // Seleciona os elementos do DOM
+            const loginForm = document.getElementById('login-form');
+            const passwordInput = document.getElementById('password-input');
+            const errorMessage = document.getElementById('error-message');
+            const loginScreen = document.getElementById('login-screen');
+            const mainContent = document.getElementById('main-content');
+            
+            // Define a senha correta
+            const correctPassword = "esp2025";
+
+            // Adiciona o listener para o envio do formulário
+            loginForm.addEventListener('submit', (event) => {
+                // Impede o recarregamento padrão da página
+                event.preventDefault();
+                
+                // Pega o valor digitado
+                const inputPassword = passwordInput.value;
+
+                // Verifica se a senha está correta
+                if (inputPassword === correctPassword) {
+                    // Senha correta: Esconde a tela de login e mostra o conteúdo
+                    
+                    // Adiciona classes para uma transição suave de fade-out
+                    loginScreen.classList.add('transition-opacity', 'duration-500', 'opacity-0');
+                    
+                    // Espera a transição terminar para esconder (display: none) e mostrar o conteúdo
+                    setTimeout(() => {
+                        loginScreen.classList.add('hidden');
+                        mainContent.classList.remove('hidden');
+                    }, 500); // 500ms (mesma duração da transição)
+
+                } else {
+                    // Senha incorreta: Mostra mensagem de erro e limpa o campo
+                    errorMessage.textContent = "Senha incorreta. Tente novamente.";
+                    errorMessage.classList.remove('hidden');
+                    passwordInput.value = ""; // Limpa o campo de senha
+                }
+            });
+        });
+    </script>
+</body>
+</html>
